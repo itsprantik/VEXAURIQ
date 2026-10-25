@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= site.name %> | <%= site.tagline %></title>
+  <meta name="description" content="<%= site.name %>. <%= site.tagline %>">
+  <meta name="theme-color" content="#0B0B0B">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <%- include('partials/header') %>
+
+  <div class="layout">
+    <%- include('partials/sidebar') %>
+
+    <main id="main">
+
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero__center">
+          <div class="hero__mark"><%- include('partials/logo') %></div>
+          <h1 class="hero__word"><%= site.name %></h1>
+          <p class="hero__tag"><%= site.tagline %></p>
+          <div class="actions">
+            <a class="btn btn--primary" href="#companies">Our Companies</a>
+            <a class="btn" href="#contact">Get in Touch</a>
+          </div>
+          <ul class="chips" aria-label="Sectors">
+            <% site.sectors.forEach(function (s) { %><li><%= s %></li><% }) %>
+          </ul>
+        </div>
+      </section>
+
+      <!-- What we do -->
+      <section class="section" id="about">
+        <p class="eyebrow">What we do</p>
+        <h2 class="section__title">One group. Three sectors. Endless ways to build.</h2>
+        <p class="lead"><%= site.about %></p>
+        <div class="grid grid--3">
+          <% site.pillars.forEach(function (p, i) { %>
+            <article class="card">
+              <span class="card__num"><%= String(i + 1).padStart(2, '0') %></span>
+              <h3><%= p.title %></h3>
+              <p><%= p.text %></p>
+            </article>
+          <% }) %>
+        </div>
+      </section>
+
+      <!-- Our companies -->
+      <section class="section" id="companies">
+        <p class="eyebrow">Our companies</p>
+        <h2 class="section__title">The brands that make up <%= site.name %>.</h2>
+        <div class="grid grid--3">
+          <% companies.forEach(function (c) { %>
+            <a class="tile" href="<%= c.url %>"<% if (c.external) { %> target="_blank" rel="noopener noreferrer"<% } %>>
+              <div class="tile__art"><%- include('partials/logo') %></div>
+              <div class="tile__body">
+                <span class="tile__sector"><%= c.sector %></span>
+                <h3><%= c.name %></h3>
+                <p><%= c.description %></p>
+                <span class="tile__link">Visit company &rarr;</span>
+              </div>
+            </a>
+          <% }) %>
+        </div>
+      </section>
+
+      <!-- How we work -->
+      <section class="section">
+        <p class="eyebrow">How we work</p>
+        <h2 class="section__title">From first idea to finished brand.</h2>
+        <ol class="steps">
+          <% site.steps.forEach(function (s, i) { %>
+            <li>
+              <span class="card__num"><%= String(i + 1).padStart(2, '0') %></span>
+              <h3><%= s.title %></h3>
+              <p><%= s.text %></p>
+            </li>
+          <% }) %>
+        </ol>
+      </section>
+
+      <!-- Call to action -->
+      <section class="section cta" id="contact">
+        <h2 class="section__title">Ready to build something with us?</h2>
+        <p class="cta__text">Partnerships, ventures or just a conversation. We would like to hear from you.</p>
+        <div class="actions actions--left">
+          <% if (site.contact.email) { %><a class="btn btn--primary" href="mailto:<%= site.contact.email %>">Email Us</a><% } %>
+          <% if (site.contact.whatsapp) { %><a class="btn" href="https://wa.me/<%= site.contact.whatsapp %>" target="_blank" rel="noopener noreferrer">WhatsApp</a><% } %>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <%- include('partials/footer') %>
+</body>
+</html>

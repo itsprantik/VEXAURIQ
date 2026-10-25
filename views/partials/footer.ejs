@@ -1,0 +1,36 @@
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <span class="footer__mark"><%- include('logo') %></span>
+        <p><%= site.tagline %></p>
+      </div>
+
+      <nav class="footer__col" aria-label="Explore">
+        <p class="label">Explore</p>
+        <a href="/#about">About</a>
+        <a href="/#companies">Companies</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+
+      <nav class="footer__col" aria-label="Our companies">
+        <p class="label">Our Companies</p>
+        <% companies.forEach(function (c) { %>
+          <a href="<%= c.url %>"<% if (c.external) { %> target="_blank" rel="noopener noreferrer"<% } %>><%= c.name %></a>
+        <% }) %>
+      </nav>
+
+      <div class="footer__col">
+        <p class="label">Contact</p>
+        <% if (site.contact.email) { %><a href="mailto:<%= site.contact.email %>"><%= site.contact.email %></a><% } %>
+        <% if (site.contact.whatsapp) { %><a href="https://wa.me/<%= site.contact.whatsapp %>" target="_blank" rel="noopener noreferrer">WhatsApp</a><% } %>
+        <% site.socials.forEach(function (s) { %><a href="<%= s.url %>" target="_blank" rel="noopener noreferrer"><%= s.label %></a><% }) %>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span>&copy; <%= site.year %> <%= site.name %>. All rights reserved.</span>
+      <a href="<%= site.privacyUrl %>">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
