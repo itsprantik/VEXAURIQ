@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= site.name %> | <%= site.tagline %></title>
   <meta name="description" content="<%= site.name %>. <%= site.tagline %>">
-  <meta name="theme-color" content="#0B0B0B">
+  <meta name="theme-color" content="#0D0D0D">
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -18,22 +18,40 @@
 
     <main id="main">
 
-      <!-- Hero -->
+      <!--Hero -->
       <section class="hero">
-        <div class="hero__center">
-          <div class="hero__mark"><%- include('partials/logo') %></div>
-          <h1 class="hero__word"><%= site.name %></h1>
-          <p class="hero__tag"><%= site.tagline %></p>
+        <div class="hero__text">
+          <span class="pill">Parent company</span>
+          <h1 class="hero__title"><%= site.tagline %></h1>
+          <p class="hero__sub"><%= site.heroSub %></p>
           <div class="actions">
             <a class="btn btn--primary" href="#companies">Our Companies</a>
             <a class="btn" href="#contact">Get in Touch</a>
           </div>
-          <ul class="chips" aria-label="Sectors">
-            <% site.sectors.forEach(function (s) { %><li><%= s %></li><% }) %>
-          </ul>
+        </div>
+
+         <% var n = 24, step = 360 / n; %>
+        <div class="arc" aria-hidden="true">
+          <div class="arc__ring">
+            <% for (var i = 0; i < n; i++) {
+                 var g = site.gallery[i % site.gallery.length];
+                 var a = i * step; if (a > 180) a -= 360; %>
+              <div class="arc__card<%= Math.abs(a) > 70 ? ' is-off' : '' %>" style="--a: <%= a %>deg">
+                <% if (g.image) { %><img src="<%= g.image %>" alt="" draggable="false"><% } else { %>
+                  <span class="arc__tag"><%= g.tag %></span>
+                  <span class="arc__no"><%= String(i + 1).padStart(2, '0') %></span>
+                  <span class="arc__label"><%= g.label %></span>
+                <% } %>
+              </div>
+            <% } %>
+          </div>
+        </div>
+
+        <div class="hero__foot" aria-hidden="true">
+          <span>Drag to explore</span>
+          <span><%= companies.length %> companies</span>
         </div>
       </section>
-
       <!-- What we do -->
       <section class="section" id="about">
         <p class="eyebrow">What we do</p>
@@ -98,5 +116,7 @@
   </div>
 
   <%- include('partials/footer') %>
+  <script src="/js/hero.js" defer></script>
+
 </body>
 </html>

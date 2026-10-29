@@ -1,6 +1,11 @@
-<aside class="sidebar" aria-label="Our companies">
-  <nav class="sidebar__nav">
-    <p class="label">Our Companies</p>
+<details class="dock" open>
+  <summary class="dock__bar">
+    <span class="dock__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="dock__title">Our Companies</span>
+    <svg class="dock__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+  </summary>
+
+  <nav class="dock__body" aria-label="Our companies">
     <ul class="companies">
       <% companies.forEach(function (c, i) { %>
         <li>
@@ -15,10 +20,10 @@
         </li>
       <% }) %>
     </ul>
-  </nav>
 
-  <div class="sidebar__foot">
-    <a class="privacy" href="<%= site.privacyUrl %>">Privacy Policy</a>
-    <p class="copy">&copy; <%= site.year %> <%= site.name %></p>
-  </div>
-</aside>    
+    <div class="dock__foot">
+      <a class="privacy" href="<%= site.privacyUrl %>">Privacy Policy</a>
+      <span class="copy">&copy; <%= site.year %></span>
+    </div>
+  </nav>
+</details>
