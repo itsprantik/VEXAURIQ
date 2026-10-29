@@ -5,6 +5,56 @@
   // On small screens the floating company window starts minimised.
   var dock = document.querySelector('.dock');
   if (dock && window.matchMedia('(max-width: 900px)').matches) dock.removeAttribute('open');
+    // Hero background: scroll parallax + gentle mouse tilt (writes --p, --mx, --my on .hero).
+    var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var root = document.documentElement;
+
+  var tx = 0, ty = 0, cx = 0, cy = 0;
+  if (!calm) {
+    window.addEventListener('pointermove', function (e) {
+      tx = (e.clientX / window.innerWidth - 0.5) * 2;
+      ty = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
+  }
+  function clamp01(v) { return Math.min(1, Math.max(0, v)); }
+  (function pageTick() {
+    if (!document.hidden) {
+      cx += (tx - cx) * 0.06; cy += (ty - cy) * 0.06;
+      var y = window.scrollY || root.scrollTop;
+      var max = Math.max(1, root.scrollHeight - window.innerHeight);
+      var p = clamp01(y / max);
+      root.style.setProperty('--sp', p.toFixed(4));
+      root.style.setProperty('--p', (calm ? 0 : p).toFixed(4));
+      root.style.setProperty('--h', (calm ? 0 : clamp01(y / window.innerHeight)).toFixed(4));
+      root.style.setProperty('--mx', cx.toFixed(3));
+      root.style.setProperty('--my', cy.toFixed(3));
+    }
+    requestAnimationFrame(pageTick);
+  })();
+
+  if (!calm && 'IntersectionObserver' in window) {
+    var targets = document.querySelectorAll(
+      '.section .eyebrow, .section__title, .lead, .card, .tile, .steps li, .cta__text, .cta .actions, .footer__top > *'
+    );
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        io.unobserve(el);
+        requestAnimationFrame(function () { el.classList.add('is-in'); });
+        setTimeout(function () {
+          el.classList.remove('reveal', 'is-in');
+          el.style.transitionDelay = '';
+        }, 1500);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    Array.prototype.forEach.call(targets, function (el) {
+      var idx = Array.prototype.indexOf.call(el.parentNode.children, el);
+      el.classList.add('reveal');
+      el.style.transitionDelay = ((idx % 4) * 90) + 'ms';
+      io.observe(el);
+    });
+  }
   var arc = document.querySelector('.arc');
   if (!arc) return;
 

@@ -162,7 +162,7 @@ main { min-width: 0; }
 }
 /* faint dark grid */
 .hero::before {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
   background-image:
     linear-gradient(rgba(238, 238, 238, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(238, 238, 238, 0.035) 1px, transparent 1px);
@@ -190,7 +190,7 @@ main { min-width: 0; }
 /* rotating 3D gallery (gentle curve) */
 .arc {
   --cw: 170px; --ch: 230px; --r: 900px;
-  position: relative; flex: 1; width: 100%; min-height: 380px; margin-top: 20px;
+  position: relative; z-index: 1;flex: 1; width: 100%; min-height: 380px; margin-top: 20px;
   perspective: 1000px; perspective-origin: 50% 40%;
   cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none;
 }
@@ -221,11 +221,12 @@ main { min-width: 0; }
   font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--muted);
 }
 .hero__foot span:first-child { margin-right: auto; margin-left: 268px; }
+/* hero background: image + drifting mist + shade, animated on scroll (--p) and mouse (--mx/--my) */
 
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .hero__text { animation: none; }
+    .hero__text, .hero__img, .hero__fog::before, .hero__fog::after { animation: none; }
   .company, .company__arrow, .tile, .dock__chev { transition: none; }
 }
 
@@ -398,3 +399,46 @@ body::after {
   content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 240px; pointer-events: none;
   background: radial-gradient(60% 100% at 50% 100%, rgba(45, 140, 139, 0.2), transparent 70%);
 }
+/* ===== page-wide background ===== */
+.page-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.page-bg__layer {
+  position: absolute; inset: -8% -5%; will-change: transform;
+  transform:
+    translate3d(calc(var(--mx, 0) * -18px), calc(var(--my, 0) * -10px + var(--p, 0) * -50px), 0)
+    scale(calc(1.04 + var(--p, 0) * 0.3));
+}
+.page-bg__img {
+  position: absolute; inset: 0; will-change: transform;
+  background: url("/img/hero-bg.jpg") calc(12% + var(--p, 0) * 76%) 40% / cover no-repeat;
+  filter: saturate(1.1) contrast(1.05) brightness(0.92);
+  animation: bgdrift 40s ease-in-out infinite alternate;
+}
+@keyframes bgdrift {
+  from { transform: translate3d(-2%, 0, 0) scale(1.04); }
+  to   { transform: translate3d(2%, -1.5%, 0) scale(1.1); }
+}
+.page-bg__fog { position: absolute; inset: 0; mix-blend-mode: screen; opacity: 0.8; }
+.page-bg__fog::before, .page-bg__fog::after {
+  content: ""; position: absolute; left: -30%; width: 160%; bottom: -6%; height: 45%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(65, 177, 167, 0.3), transparent 70%);
+  filter: blur(28px); animation: fogmove 26s ease-in-out infinite alternate;
+}
+.page-bg__fog::after { bottom: 10%; height: 34%; opacity: 0.7; animation-duration: 38s; animation-direction: alternate-reverse; }
+@keyframes fogmove { from { transform: translateX(-8%); } to { transform: translateX(8%); } }
+.page-bg__shade {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(7, 10, 10, calc(0.7 + var(--h, 0) * 0.16)) 0%,
+      rgba(7, 10, 10, calc(0.34 + var(--h, 0) * 0.46)) 40%,
+      rgba(7, 10, 10, calc(0.55 + var(--h, 0) * 0.3)) 100%),
+    radial-gradient(65% 60% at 50% 40%, transparent, rgba(7, 10, 10, 0.55) 100%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-bg__img, .page-bg__fog::before, .page-bg__fog::after { animation: none; }
+}
+
+/* ===== scroll effects ===== */
+
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(.2, .7, .2, 1); }
+.reveal.is-in { opacity: 1; transform: none; }
