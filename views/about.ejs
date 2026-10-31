@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About | <%= site.name %></title>
+  <meta name="description" content="About <%= site.name %>: a parent company building an ecosystem of independent ventures across creativity, technology and design.">
+  <meta name="theme-color" content="#0D0D0D">
+  <link rel="icon" type="image/svg+xml" href="/img/logo-mark.svg">
+  <link rel="preload" href="/fonts/neofolia.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-about">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <%- include('partials/bg') %>
+  <%- include('partials/header') %>
+
+  <div class="layout">
+    <%- include('partials/sidebar') %>
+
+    <main id="main" class="ab">
+
+      <!-- 1. Hero: text left, ecosystem right -->
+      <section class="ab__hero">
+        <div class="panel ab__intro">
+          <p class="eyebrow">About <%= site.name %></p>
+          <h1 class="ab__title"><%= about.title %></h1>
+          <p><strong><%= site.name %></strong> <%= about.intro[0] %></p>
+          <div class="actions actions--left">
+            <a class="btn btn--primary" href="#companies">Our Companies</a>
+            <a class="btn" href="#contact">The Bigger Picture</a>
+          </div>
+        </div>
+
+        <div class="panel ab__eco">
+          <div class="eco" aria-label="<%= site.name %> ecosystem">
+            <div class="eco__root">
+              <strong><%= site.name %></strong>
+              <span>Parent company</span>
+              <em>Building an ecosystem of independent ventures.</em>
+            </div>
+            <div class="eco__stem" aria-hidden="true"></div>
+            <div class="eco__kids">
+              <div class="eco__kid">
+                <h3>Prism Frames</h3>
+                <span class="badge badge--on">Active venture</span>
+                <p>Creative products &middot; Custom frames &middot; 3D design</p>
+              </div>
+              <div class="eco__kid">
+                <h3>Future Ventures</h3>
+                <span class="badge">Expanding</span>
+                <p>New ideas &middot; New industries &middot; New possibilities</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Stats row -->
+      <section class="ab__stats">
+        <% about.stats.forEach(function (st) { %>
+          <div class="panel stat"><strong><%= st.n %></strong><span><%= st.label %></span></div>
+        <% }) %>
+      </section>
+
+      <!-- 3. Who we are + quote -->
+      <section class="ab__split">
+        <div class="panel">
+          <p class="eyebrow">Who we are</p>
+          <h2 class="ab__h2"><%= about.vision.title %></h2>
+          <p><%= about.intro[1] %></p>
+          <p><strong>Vision.</strong> <%= about.vision.text %></p>
+          <p><%= about.vision.more %></p>
+        </div>
+        <div class="panel panel--quote">
+          <p class="eyebrow">Our philosophy</p>
+          <blockquote>At <%= site.name %>, <%= about.quote %></blockquote>
+        </div>
+      </section>
+
+      <!-- 4. Companies -->
+      <section class="ab__split ab__split--rev" id="companies">
+        <div class="panel">
+          <p class="eyebrow">Our companies</p>
+          <h2 class="ab__h2">Prism Frames</h2>
+          <span class="tile__sector"><%= about.prism.kicker %></span>
+          <% about.prism.text.forEach(function (t) { %><p><%= t %></p><% }) %>
+          <ul class="tags">
+            <% about.prism.tags.forEach(function (t) { %><li><%= t %></li><% }) %>
+          </ul>
+        </div>
+        <div class="panel panel--quote">
+          <p class="eyebrow">What's next</p>
+          <h2 class="ab__h2"><%= about.more.title %></h2>
+          <p><strong><%= site.name %></strong> <%= about.more.text %></p>
+        </div>
+      </section>
+
+      <!-- 5. Values -->
+      <section class="panel ab__values">
+        <p class="eyebrow">What we stand for</p>
+        <h2 class="ab__h2">The values behind every venture</h2>
+        <div class="vals">
+          <% about.values.forEach(function (v, i) { %>
+            <article class="val">
+              <span class="card__num"><%= String(i + 1).padStart(2, '0') %></span>
+              <h3><%= v.title %></h3>
+              <p><%= v.text %></p>
+            </article>
+          <% }) %>
+        </div>
+      </section>
+
+      <!-- 6. Closing -->
+      <section class="panel ab__close" id="contact">
+        <p class="eyebrow"><%= about.bigger.title %></p>
+        <h2 class="ab__h2"><%= about.bigger.text %></h2>
+        <ul class="chain">
+          <% about.bigger.lines.forEach(function (l) { %><li><%= l %></li><% }) %>
+        </ul>
+        <p class="sign"><%= site.name %> &mdash; <%= about.bigger.sign %></p>
+        <div class="actions">
+          <a class="btn btn--primary" href="/#companies">Explore our companies</a>
+          <% if (site.contact.email) { %><a class="btn" href="mailto:<%= site.contact.email %>">Get in touch</a><% } %>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <%- include('partials/footer') %>
+  <script src="/js/hero.js" defer></script>
+</body>
+</html>

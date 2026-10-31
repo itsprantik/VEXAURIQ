@@ -6,6 +6,7 @@ const helmet = require('helmet');
 
 const companies = require('./data/companies');
 const site = require('./data/site');
+const about = require('./data/about');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,7 +23,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
   res.render('index', { site, companies });
 });
-
+// ---- About page ----
+app.get('/about', (req, res) => {
+  res.render('about', { site, companies, about });
+});
 // Other pages (privacy policy, sub-company pages) will be added later.
 
 app.listen(PORT, () => {
