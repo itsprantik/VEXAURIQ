@@ -22,7 +22,7 @@
 
       <div class="footer__col">
         <p class="label">Contact</p>
-        <% if (site.contact.email) { %><a href="mailto:<%= site.contact.email %>"><%= site.contact.email %></a><% } %>
+        <% if (site.contact.email) { %><a href="mailto:vexauriq@gmail.com">vexauriq@gmail.com</a><% } %>
         <% if (site.contact.whatsapp) { %><a href="https://wa.me/<%= site.contact.whatsapp %>" target="_blank" rel="noopener noreferrer">WhatsApp</a><% } %>
         <% site.socials.forEach(function (s) { %><a href="<%= s.url %>" target="_blank" rel="noopener noreferrer"><%= s.label %></a><% }) %>
       </div>
@@ -30,7 +30,21 @@
 
     <div class="footer__bottom">
       <span>&copy; <%= site.year %> <%= site.name %>. All rights reserved.</span>
-      <a href="<%= site.privacyUrl %>">Privacy Policy</a>
+            <span class="footer__legal">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms &amp; Conditions</a>
+      </span>
     </div>
   </div>
 </footer>
+
+<!-- Cookie banner (hidden until cookies.js decides to show it) -->
+<div class="cookie" id="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie notice" hidden>
+  <p class="cookie__title">Cookies &amp; privacy</p>
+  <p class="cookie__text">We use only what this site needs to work and remember your choice. Optional cookies, such as analytics, are used only if you accept. <a href="<%= site.privacyUrl %>">Read our Privacy Policy</a>.</p>
+  <div class="cookie__actions">
+    <button type="button" class="btn btn--primary" data-cookie="accept">Accept</button>
+    <button type="button" class="btn" data-cookie="decline">Decline</button>
+  </div>
+</div>
+<script src="/js/cookies.js" defer></script>

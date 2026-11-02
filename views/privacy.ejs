@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy | <%= site.name %></title>
+  <meta name="description" content="How <%= site.name %> collects, uses and protects information on this website.">
+  <meta name="theme-color" content="#0D0D0D">
+  <link rel="icon" type="image/svg+xml" href="/img/logo-mark.svg">
+  <link rel="preload" href="/fonts/neofolia.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-privacy">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <%- include('partials/bg') %>
+  <%- include('partials/header') %>
+
+  <div class="layout">
+    <%- include('partials/sidebar') %>
+
+    <main id="main" class="ab ab--doc">
+      <header class="panel doc__head">
+        <p class="eyebrow">Legal</p>
+        <h1 class="ab__title">Privacy Policy</h1>
+        <p class="doc__meta">Last updated: <%= policy.updated %></p>
+        <p><%= fill(policy.intro) %></p>
+      </header>
+
+      <article class="panel doc">
+        <% policy.sections.forEach(function (s, i) { %>
+          <section class="doc__sec">
+            <h2><span><%= String(i + 1).padStart(2, '0') %></span><%= s.title %></h2>
+            <% (s.body || []).forEach(function (t) { %><p><%= fill(t) %></p><% }) %>
+            <% if (s.list) { %><ul><% s.list.forEach(function (li) { %><li><%= fill(li) %></li><% }) %></ul><% } %>
+          </section>
+        <% }) %>
+      </article>
+
+      <div class="doc__back"><a class="btn" href="/">Back to Home</a></div>
+    </main>
+  </div>
+
+  <%- include('partials/footer') %>
+  <script src="/js/hero.js" defer></script>
+</body>
+</html>
