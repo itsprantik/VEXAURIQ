@@ -404,12 +404,13 @@ body::after {
 .page-bg__layer {
   position: absolute; inset: -8% -5%; will-change: transform;
   transform:
-    translate3d(calc(var(--mx, 0) * -18px), calc(var(--my, 0) * -10px + var(--p, 0) * -50px), 0)
+    translate3d(calc(var(--mx, 0) * -18px + 6% - var(--p, 0) * 12%), calc(var(--my, 0) * -10px + var(--p, 0) * -50px), 0)
     scale(calc(1.04 + var(--p, 0) * 0.3));
 }
 .page-bg__img {
-  position: absolute; inset: 0; will-change: transform;
-  background: url("/img/hero-bg.jpg") calc(12% + var(--p, 0) * 76%) 40% / cover no-repeat;
+  position: absolute; inset: 0 -14%;
+  /* the picture pans from the platform on the left to the planet on the right as you scroll */
+  background: url("/img/hero-bg.jpg") 50% 40% / cover no-repeat;
   filter: saturate(1.1) contrast(1.05) brightness(0.92);
   animation: bgdrift 40s ease-in-out infinite alternate;
 }
@@ -550,3 +551,24 @@ body::after {
 .cookie__actions .btn { flex: 1; padding: 12px 16px; font-size: 12px; cursor: pointer; }
 @media (max-width: 520px) { .cookie { right: 12px; left: 12px; bottom: 12px; width: auto; } }
 @media (prefers-reduced-motion: reduce) { .cookie { transition: none; transform: none; } }
+
+/* ================= PHONE / TOUCH PERFORMANCE ================= */
+/* Blur filters, blend modes and big moving layers are what make phones lag, so they are switched off here. */
+@media (max-width: 900px), (pointer: coarse) {
+  body { background-attachment: scroll; }
+  *, *::before, *::after { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+  .header { background: rgba(7, 10, 10, 0.95); }
+  .dock { background: rgba(6, 12, 28, 0.96); }
+  .panel, .eco__root, .eco__kid, .feature { background: rgba(10, 16, 16, 0.9); }
+  .footer { background: rgba(4, 6, 6, 0.92); }
+  .cookie { background: rgba(7, 10, 10, 0.97); }
+
+  .page-bg { inset: 0 0 auto 0; height: 100vh; height: 100lvh; }
+  .page-bg__layer { inset: -4% -8%; transform: translate3d(calc(6% - var(--p, 0) * 12%), 0, 0) scale(1.08); }
+  .page-bg__img { inset: 0; animation: none; filter: none; }
+  .page-bg__fog { mix-blend-mode: normal; opacity: 0.45; }
+  .page-bg__fog::after { display: none; }
+  .arc::before { filter: none; }
+  .arc { touch-action: pan-y; }
+  .arc__card { box-shadow: none; }
+}
